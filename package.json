@@ -32,7 +32,9 @@
     "react-native-svg": "15.12.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "typescript": "~5.9.2",
+    "@types/react": "~19.1.10"
   },
   "private": true
 }

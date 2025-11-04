@@ -1,12 +1,14 @@
+// src/navigation/Tabs.js
 import React from 'react';
 import { View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Feather } from '@expo/vector-icons';
 
 import DashboardScreen from '../screens/DashboardScreen';
-import LiveCamsScreen from '../screens/LiveCamsScreen';
+import CamerasStack from './CamerasStack';
+import AnalyticsScreen from '../screens/AnalyticsScreen';
 import AlertsScreen from '../screens/AlertsScreen';
-import FloorPlanScreen from '../screens/FloorPlanScreen';
+
 import { useAlertStore } from '../state/useAlertStore';
 
 const Tab = createBottomTabNavigator();
@@ -37,8 +39,9 @@ export default function Tabs({ route }) {
     ? useAlertStore((s) => (s.current ? 1 : 0) + (s.queue?.length || 0))
     : 0;
 
+  // Allow deep-linking to a specific tab via route.params.screen
   const wanted = route?.params?.screen;
-  const valid = ['Live Feed', 'Cameras', 'Floor Plan', 'Alerts'];
+  const valid = ['Live Feed', 'Cameras', 'Analytics', 'Alerts'];
   const initialTab = valid.includes(wanted) ? wanted : 'Live Feed';
 
   return (
@@ -62,20 +65,24 @@ export default function Tabs({ route }) {
           tabBarIcon: ({ color, size }) => <TabIcon name="monitor" color={color} size={size} />,
         }}
       />
+
+      {/* Cameras tab uses a Stack (list -> detail) */}
       <Tab.Screen
         name="Cameras"
-        component={LiveCamsScreen}
+        component={CamerasStack}
         options={{
           tabBarIcon: ({ color, size }) => <TabIcon name="camera" color={color} size={size} />,
         }}
       />
+
       <Tab.Screen
-        name="Floor Plan"
-        component={FloorPlanScreen}
+        name="Analytics"
+        component={AnalyticsScreen}
         options={{
-          tabBarIcon: ({ color, size }) => <TabIcon name="map" color={color} size={size} />,
+          tabBarIcon: ({ color, size }) => <TabIcon name="bar-chart-2" color={color} size={size} />,
         }}
       />
+
       <Tab.Screen
         name="Alerts"
         component={AlertsScreen}
